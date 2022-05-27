@@ -1,0 +1,41 @@
+.__Auth {
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.__Auth .form {
+  border: solid black 1px;
+  padding: 5rem;
+}
+.__Auth .form h1 {
+  font-size: 3rem;
+}
+.__Auth .form .fields {
+    margin: 2rem 0rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.__Auth .form .fields .one {
+    margin: 1rem 0rem;
+}
+.__Auth .form .fields .one label {
+    margin-right: 1rem;
+}
+.__Auth .form .fields .one input {
+    padding: .5rem;
+}
+.__Auth .form .error {
+    display: block;
+}
+.__Auth .form .redirect {
+    margin-top: 2rem;
+    display: block;
+}
