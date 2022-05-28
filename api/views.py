@@ -64,10 +64,35 @@ def MuscleGroup(request):
             return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Muscle group with the same name already exists!'}, status=status.HTTP_200_OK)
     elif request.method == 'GET':
-        all_data = models.MuscleGroup.objects.all()
+        all_data = models.MuscleGroup.objects.all().order_by('-id')
         object_serializer = serializers.MuscleGroupSerializer(
             all_data, many=True)
         return JsonResponse(object_serializer.data, safe=False)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def MyMuscleGroup(request, pk):
+    if request.method == 'GET':
+        # All data of specific user
+        all_data = models.MuscleGroup.objects.all().filter(user=pk).order_by('-id')
+        object_serializer = serializers.MuscleGroupSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+    elif request.method == 'PUT':
+        # Modifying specific entry
+        entry = models.MuscleGroup.objects.get(pk=pk)
+        data = JSONParser().parse(request)
+        object_serializer = serializers.MuscleGroupSerializer(
+            entry, data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        entry = models.MuscleGroup.objects.get(pk=pk)
+        entry.delete()
+        return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
 
 
 # @api_view(['GET', 'POST', 'DELETE'])
@@ -102,3 +127,27 @@ def MuscleGroup(request):
     #     count = models.Signup.objects.all().delete()
     #     return JsonResponse({'message': 'alldeleted'}, status=status.HTTP_200_OK)
     # pass
+
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def user_detail(request, pk):
+#     try:
+#         user = models.Signup.objects.get(pk=pk)
+#     except models.Signup.DoesNotExist:
+#         return JsonResponse({'message': 'notexist'}, status=status.HTTP_200_OK)
+
+#     if request.method == 'GET':
+#         signup_serializer = serializers.SignupSerializer(user)
+#         return JsonResponse(signup_serializer.data)
+
+#     elif request.method == 'PUT':
+#         user_data = JSONParser().parse(request)
+#         signup_serializer = serializers.SignupSerializer(
+#             user, data=user_data)
+#         if signup_serializer.is_valid():
+#             signup_serializer.save()
+#             return JsonResponse(signup_serializer.data)
+#         return JsonResponse(signup_serializer.errors, status=status.HTTP_200_OK)
+
+#     elif request.method == 'DELETE':
+#         user.delete()
+#         return JsonResponse({'message': 'deleted'}, status=status.HTTP_200_OK)
