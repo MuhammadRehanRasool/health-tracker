@@ -29,7 +29,7 @@ html {
   color: white;
   outline: none;
   border: solid black 1px;
-  padding: .8rem 3rem;
+  padding: 0.8rem 3rem;
   border-radius: 25px;
   display: block;
   margin: auto;
@@ -43,7 +43,18 @@ html {
   border: solid black 1px;
   transition: 300ms;
 }
-#error{
+#error {
   margin: 1rem 0rem;
   display: block;
+  max-width: 300px;
+  align-self: center;
+  overflow-wrap: break-word;
+}
+.one input {
+  width: 100%;
+  padding: 0.5rem;
+  outline: none;
+  border: 1px solid grey;
+  border-radius: 25px;
+  padding: 1rem 2rem;
 }

@@ -73,24 +73,24 @@ export default function Login() {
   };
   return (
     <div className="__Auth">
-      <div className="form">
+      <div className="form card bg-light">
         <h1>Log In</h1>
         <div className="fields">
           <div className="one">
-            <label htmlFor="username">Username</label>
             <input
               name="username"
               id="username"
+              placeholder="Username"
               type="text"
               value={credentials.username}
               onChange={changeCredentials}
             />
           </div>
           <div className="one">
-            <label htmlFor="password">Password</label>
             <input
               name="password"
               id="password"
+              placeholder="Password"
               type="password"
               value={credentials.password}
               onChange={changeCredentials}

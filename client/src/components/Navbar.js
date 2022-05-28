@@ -17,7 +17,7 @@ const Navbar = (props) => {
   return (
     <>
       <nav className="navbar navbar-light bg-light justify-content-between px-5 py-3 __Navbar">
-        <a className="navbar-brand">Health Tracker</a>
+        <Link to="/" className="navbar-brand">Health Tracker</Link>
         <button className="button pull-me-right" onClick={logout}>
           Log Out
         </button>

@@ -1,0 +1,16 @@
+.__Mixed {
+  width: 100%;
+  padding: 0rem 5rem;
+}
+.__Mixed .add .form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2rem;
+}
+
+
+.__Mixed .add .form .one{
+    width: 30%;
+  }
