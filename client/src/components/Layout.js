@@ -47,7 +47,7 @@ function Layout(props) {
           __init_session={__init_session}
           setSession={setSession}
         />
-        {props.children}
+        <div className="mt-5">{props.children}</div>
       </div>
     </UserData.Provider>
   );

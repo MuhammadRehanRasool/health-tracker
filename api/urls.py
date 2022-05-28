@@ -1,10 +1,10 @@
-from django.urls import path
+from django.urls import path, re_path
 from rest_framework_simplejwt import views as jwt_views
 from . import views
 
 urlpatterns = [
     path('users', views.CustomUserCreate.as_view(), name="users"),
+    re_path(r'^muscle_group$', views.MuscleGroup),
     path('token/obtain', views.MyTokenObtainPairView.as_view(), name='token_create'),
     path('token/refresh', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('hello', views.HelloWorldView.as_view(), name='hello_world')
 ]

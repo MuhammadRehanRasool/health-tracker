@@ -75,36 +75,42 @@ export default function Register() {
                 setMessage(message, "danger");
               } else {
                 axiosInstance
-          .post("/token/obtain", {
-            username:credentials.username,
-            password:credentials.password
-          })
-          .then((response) => {
-            if (response.data) {
-              axiosInstance.defaults.headers["Authorization"] =
-                "JWT " + response.data.access;
-              localStorage.setItem("access_token", response.data.access);
-              localStorage.setItem("refresh_token", response.data.refresh);
-              sessionStorage.setItem(
-                "loggedin",
-                JSON.stringify({
-                  data: {
-                    id: response.data.id,
-                    name: response.data.name,
-                    email: response.data.email,
-                    username: response.data.username,
-                    first_name: response.data.first_name,
-                    last_name: response.data.last_name,
-                    signedUpAt: response.data.signedUpAt,
-                  },
-                })
-              );
-              navigate("/");
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+                  .post("/token/obtain", {
+                    username: credentials.username,
+                    password: credentials.password,
+                  })
+                  .then((response) => {
+                    if (response.data) {
+                      axiosInstance.defaults.headers["Authorization"] =
+                        "JWT " + response.data.access;
+                      localStorage.setItem(
+                        "access_token",
+                        response.data.access
+                      );
+                      localStorage.setItem(
+                        "refresh_token",
+                        response.data.refresh
+                      );
+                      sessionStorage.setItem(
+                        "loggedin",
+                        JSON.stringify({
+                          data: {
+                            id: response.data.id,
+                            name: response.data.name,
+                            email: response.data.email,
+                            username: response.data.username,
+                            first_name: response.data.first_name,
+                            last_name: response.data.last_name,
+                            signedUpAt: response.data.signedUpAt,
+                          },
+                        })
+                      );
+                      navigate("/");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
               }
             }
           })
@@ -122,13 +128,13 @@ export default function Register() {
   };
   return (
     <div className="__Auth">
-      <div className="form">
+      <div className="form card bg-light">
         <h1>Register</h1>
         <div className="fields">
           <div className="one">
-            <label htmlFor="first_name">First Name</label>
             <input
               name="first_name"
+              placeholder="First Name"
               id="first_name"
               type="text"
               value={credentials.first_name}
@@ -136,9 +142,9 @@ export default function Register() {
             />
           </div>
           <div className="one">
-            <label htmlFor="last_name">Last Name</label>
             <input
               name="last_name"
+              placeholder="Last Name"
               id="last_name"
               type="text"
               value={credentials.last_name}
@@ -146,9 +152,9 @@ export default function Register() {
             />
           </div>
           <div className="one">
-            <label htmlFor="email">Email</label>
             <input
               name="email"
+              placeholder="Email"
               id="email"
               type="email"
               value={credentials.email}
@@ -156,9 +162,9 @@ export default function Register() {
             />
           </div>
           <div className="one">
-            <label htmlFor="username">Username</label>
             <input
               name="username"
+              placeholder="Username"
               id="username"
               type="text"
               value={credentials.username}
@@ -166,9 +172,9 @@ export default function Register() {
             />
           </div>
           <div className="one">
-            <label htmlFor="password">Password</label>
             <input
               name="password"
+              placeholder="Password"
               id="password"
               type="password"
               value={credentials.password}
