@@ -75,6 +75,14 @@ export default function Home() {
               tagline="Sessions"
             />
           </div>
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
+            <Card
+              link="/bmi"
+              title="BMI"
+              kinds="Calculate"
+              tagline="Body Mass Index"
+            />
+          </div>
         </div>
       </div>
     </div>

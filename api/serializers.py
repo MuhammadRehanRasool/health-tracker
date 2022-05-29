@@ -83,3 +83,9 @@ class StopwatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Stopwatch
         fields = ('id', 'datetime', 'seconds', 'user')
+
+
+class BMISerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.BMI
+        fields = ('id', 'datetime', 'height', 'weight', 'bmi', 'status', 'user')

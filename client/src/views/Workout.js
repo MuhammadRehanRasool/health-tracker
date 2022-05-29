@@ -212,7 +212,9 @@ export default function Workout() {
                   <option
                     key={one.id}
                     value={one.id}
-                    selected={data.muscleGroup === one.id.toString() ? true : false}
+                    selected={
+                      data.muscleGroup === one.id.toString() ? true : false
+                    }
                   >
                     {one.name}
                   </option>
@@ -225,7 +227,10 @@ export default function Workout() {
             <div className="mb-4 custom-exercises">
               {exercise.length > 0 ? (
                 <>
-                  <span className="one col category-custom category-input">
+                  <span
+                    style={{ padding: "0" }}
+                    className="one col category-custom category-input"
+                  >
                     <input
                       placeholder="Search exercises..."
                       value={search}
@@ -310,7 +315,7 @@ export default function Workout() {
                       <th scope="col">{one.muscleGroup?.name}</th>
                       <th scope="col d-flex justify-content-center align-items-center">
                         <span
-                          className="text-muted d-flex justify-content-center align-items-center"
+                          className="text-muted d-flex align-items-center"
                           style={{ maxWidth: "200px" }}
                         >
                           {one.exercises.list
