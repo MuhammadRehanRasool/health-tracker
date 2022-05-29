@@ -40,8 +40,8 @@ export default function Exercise() {
           user: session.personal.id,
         })
         .then((response) => {
-          if (response.message) {
-            setMessage(response.message, "danger");
+          if (response.data.message) {
+            setMessage(response.data.message, "danger");
           } else {
             setMessage(`${data.name} added!`, "success");
             setData(__init);
@@ -82,8 +82,8 @@ export default function Exercise() {
           user: session.personal.id,
         })
         .then((response) => {
-          if (response.message) {
-            setMessage(response.message, "danger");
+          if (response.data.message) {
+            setMessage(response.data.message, "danger");
           } else {
             setMessage(`${data.name} updated!`, "success");
             myData();
@@ -169,7 +169,9 @@ export default function Exercise() {
                   <option
                     key={one.id}
                     value={one.id}
-                    selected={data.muscleGroup === one ? true : false}
+                    selected={
+                      data.muscleGroup === one.id.toString() ? true : false
+                    }
                   >
                     {one.name}
                   </option>
@@ -227,7 +229,7 @@ export default function Exercise() {
                             });
                             setData({
                               name: one.name,
-                              muscleGroup: one.muscleGroup.id,
+                              muscleGroup: one.muscleGroup?one.muscleGroup.id:"",
                               user: "",
                             });
                           }}

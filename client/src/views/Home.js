@@ -26,8 +26,8 @@ export default function Home() {
         Welcome {session.personal.username}!
       </span>
       <div className="mt-5 p-4 d-flex justify-content-center align-items-center">
-        <div className="row">
-          <div className="col-6 my-3">
+        <div className="row d-flex">
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
             <Card
               link="/muscleGroup"
               title="Muscle Group"
@@ -35,7 +35,7 @@ export default function Home() {
               tagline="Muscle Groups"
             />
           </div>
-          <div className="col-6 my-3">
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
             <Card
               link="/exercise"
               title="Exercise"
@@ -43,12 +43,28 @@ export default function Home() {
               tagline="Exercises"
             />
           </div>
-          <div className="col-6 my-3">
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
             <Card
               link="/workout"
               title="Workout"
               kinds="Add/View/Update"
               tagline="Workouts"
+            />
+          </div>
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
+            <Card
+              link="/schedule"
+              title="Schedule"
+              kinds="Add/View/Update"
+              tagline="Schedule Workouts"
+            />
+          </div>
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
+            <Card
+              link="/viewSchedule"
+              title="View Schedule"
+              kinds="View"
+              tagline="Calendar"
             />
           </div>
         </div>

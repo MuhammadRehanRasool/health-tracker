@@ -27,3 +27,9 @@ class Workout(models.Model):
     muscleGroup = models.ForeignKey(
         MuscleGroup, related_name="workout_group", on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(CustomUser, related_name="workout_user", on_delete=models.CASCADE)
+
+class Schedule(models.Model):
+    day = models.CharField(max_length=300, unique=True)
+    workout = models.ForeignKey(
+        Workout, related_name="schedule_workout", on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name="schedule_user", on_delete=models.CASCADE)

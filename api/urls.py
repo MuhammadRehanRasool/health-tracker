@@ -10,6 +10,8 @@ urlpatterns = [
     re_path(r'^exercise/(?P<pk>[0-9]+)$', views.MyExercise),
     re_path(r'^workout$', views.Workout),
     re_path(r'^workout/(?P<pk>[0-9]+)$', views.MyWorkout),
+    re_path(r'^schedule$', views.Schedule),
+    re_path(r'^schedule/(?P<pk>[0-9]+)$', views.MySchedule),
     path('token/obtain', views.MyTokenObtainPairView.as_view(), name='token_create'),
     path('token/refresh', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]
