@@ -54,7 +54,6 @@ export default function ViewSchedule() {
           if (check.length > 0) {
             data[i]["date"] = check[0].date;
             data[i]["title"] = data[i].workout.name;
-            data[i]["check"] = check[0].day;
           }
         });
         setEntries(data);

@@ -135,6 +135,7 @@ def MyExercise(request, pk):
         entry.delete()
         return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
 
+
 @api_view(['GET', 'POST', 'DELETE'])
 def Workout(request):
     if request.method == 'POST':
@@ -175,6 +176,7 @@ def MyWorkout(request, pk):
         entry.delete()
         return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
 
+
 @api_view(['GET', 'POST', 'DELETE'])
 def Schedule(request):
     if request.method == 'POST':
@@ -214,6 +216,32 @@ def MySchedule(request, pk):
         entry = models.Schedule.objects.get(pk=pk)
         entry.delete()
         return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', 'POST'])
+def Stopwatch(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        object_serializer = serializers.StopwatchSerializer(data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Something bad happened!'}, status=status.HTTP_200_OK)
+    elif request.method == 'GET':
+        all_data = models.Stopwatch.objects.all().order_by('-id')
+        object_serializer = serializers.StopwatchSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def MyStopwatch(request, pk):
+    if request.method == 'GET':
+        # All data of specific user
+        all_data = models.Stopwatch.objects.all().filter(user=pk).order_by('-id')
+        object_serializer = serializers.StopwatchSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
 
 # @api_view(['GET', 'POST', 'DELETE'])
 # def MuscleGroup(request):

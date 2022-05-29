@@ -73,6 +73,13 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
 class ViewScheduleSerializer(serializers.ModelSerializer):
     workout = WorkoutSerializer()
+
     class Meta:
         model = models.Schedule
         fields = ('id', 'day', 'workout', 'user')
+
+
+class StopwatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Stopwatch
+        fields = ('id', 'datetime', 'seconds', 'user')
