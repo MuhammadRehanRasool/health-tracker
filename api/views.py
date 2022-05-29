@@ -175,6 +175,45 @@ def MyWorkout(request, pk):
         entry.delete()
         return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
 
+@api_view(['GET', 'POST', 'DELETE'])
+def Schedule(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        object_serializer = serializers.ScheduleSerializer(data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Day is already reserved!'}, status=status.HTTP_200_OK)
+    elif request.method == 'GET':
+        all_data = models.Schedule.objects.all().order_by('-id')
+        object_serializer = serializers.ViewScheduleSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def MySchedule(request, pk):
+    if request.method == 'GET':
+        # All data of specific user
+        all_data = models.Schedule.objects.all().filter(user=pk).order_by('-id')
+        object_serializer = serializers.ViewScheduleSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+    elif request.method == 'PUT':
+        # Modifying specific entry
+        entry = models.Schedule.objects.get(pk=pk)
+        data = JSONParser().parse(request)
+        object_serializer = serializers.ScheduleSerializer(
+            entry, data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data)
+        return JsonResponse({'message': 'Day is already reserved!'}, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        entry = models.Schedule.objects.get(pk=pk)
+        entry.delete()
+        return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
 
 # @api_view(['GET', 'POST', 'DELETE'])
 # def MuscleGroup(request):

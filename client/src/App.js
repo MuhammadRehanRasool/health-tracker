@@ -7,6 +7,8 @@ import Layout from "./components/Layout";
 import Exercise from "./views/Exercise";
 import MuscleGroup from "./views/MuscleGroup";
 import Workout from "./views/Workout";
+import ViewSchedule from "./views/ViewSchedule";
+import Schedule from "./views/Schedule";
 // import Layout from "./components/Layout";
 
 function App() {
@@ -45,6 +47,22 @@ function App() {
             element={
               <Layout>
                 <Workout />
+              </Layout>
+            }
+          />
+          <Route
+            path="/schedule"
+            element={
+              <Layout>
+                <Schedule />
+              </Layout>
+            }
+          />
+          <Route
+            path="/viewSchedule"
+            element={
+              <Layout>
+                <ViewSchedule />
               </Layout>
             }
           />

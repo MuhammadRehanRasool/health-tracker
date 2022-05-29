@@ -38,8 +38,8 @@ export default function MuscleGroup() {
           user: session.personal.id,
         })
         .then((response) => {
-          if (response.message) {
-            setMessage(response.message, "danger");
+          if (response.data.message) {
+            setMessage(response.data.message, "danger");
           } else {
             setMessage(`${data.name} added!`, "success");
             setData(__init);
@@ -80,8 +80,8 @@ export default function MuscleGroup() {
           user: session.personal.id,
         })
         .then((response) => {
-          if (response.message) {
-            setMessage(response.message, "danger");
+          if (response.data.message) {
+            setMessage(response.data.message, "danger");
           } else {
             setMessage(`${data.name} updated!`, "success");
             myData();

@@ -5,16 +5,16 @@ import UserData from "../components/UserData";
 import "./../css/mixed.css";
 import { AiFillDelete, AiTwotoneEdit } from "react-icons/ai";
 
-export default function Exercise() {
+export default function Schedule() {
   const { session, setSession } = React.useContext(UserData);
   const __init = {
-    name: "",
+    day: "",
     user: "",
-    muscleGroup: "",
+    workout: "",
   };
   const [data, setData] = useState(__init);
   const [entries, setEntries] = useState([]);
-  const [muscleGroup, setMuscleGroup] = useState([]);
+  const [workout, setWorkout] = useState([]);
   const [isEdit, setIsEdit] = useState({
     status: false,
     id: null,
@@ -33,9 +33,9 @@ export default function Exercise() {
       '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
     e.preventDefault();
     resetMessage();
-    if (data.name !== "") {
+    if (data.day !== "" && data.workout !== "") {
       await axiosInstance
-        .post("/exercise", {
+        .post("/schedule", {
           ...data,
           user: session.personal.id,
         })
@@ -43,7 +43,7 @@ export default function Exercise() {
           if (response.data.message) {
             setMessage(response.data.message, "danger");
           } else {
-            setMessage(`${data.name} added!`, "success");
+            setMessage(`${data.day} scheduled!`, "success");
             setData(__init);
             myData();
           }
@@ -60,7 +60,7 @@ export default function Exercise() {
 
   const myData = async (e) => {
     await axiosInstance
-      .get(`/exercise/${session.personal.id}`)
+      .get(`/schedule/${session.personal.id}`)
       .then((response) => {
         setEntries(response.data);
       })
@@ -77,7 +77,7 @@ export default function Exercise() {
     resetMessage();
     if (data.name !== "") {
       await axiosInstance
-        .put(`/exercise/${isEdit.id ? isEdit.id : ""}`, {
+        .put(`/schedule/${isEdit.id ? isEdit.id : ""}`, {
           ...data,
           user: session.personal.id,
         })
@@ -85,7 +85,7 @@ export default function Exercise() {
           if (response.data.message) {
             setMessage(response.data.message, "danger");
           } else {
-            setMessage(`${data.name} updated!`, "success");
+            setMessage(`${data.day} scheduled!`, "success");
             myData();
           }
         })
@@ -106,7 +106,7 @@ export default function Exercise() {
 
   const deleteData = async (id) => {
     await axiosInstance
-      .delete(`/exercise/${id}`)
+      .delete(`/schedule/${id}`)
       .then((response) => {
         setMessage(`Deleted!`, "success");
         myData();
@@ -116,11 +116,11 @@ export default function Exercise() {
       });
   };
 
-  const fetchMuscleGroup = async (e) => {
+  const fetchWorkout = async (e) => {
     await axiosInstance
-      .get(`/muscle_group/${session.personal.id}`)
+      .get(`/workout/${session.personal.id}`)
       .then((response) => {
-        setMuscleGroup(response.data);
+        setWorkout(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -129,51 +129,91 @@ export default function Exercise() {
 
   useEffect(() => {
     if (session.personal.id !== "") {
-      fetchMuscleGroup();
+      fetchWorkout();
       myData();
     }
   }, [session]);
 
   return (
     <div className="__Mixed">
-      <h1>Exercise</h1>
+      <h1>Workout Schedule</h1>
       <div className="add my-5">
         <h3 className="text-muted">
-          {isEdit.status ? "Update" : "Add"} Exercise
+          {isEdit.status ? "Update" : "Add"} Schedule
         </h3>
         <div className="form">
           <div className="one mb-2">
-            <input
-              name="name"
-              placeholder="Name"
-              type="text"
-              value={data.name}
-              onChange={changeData}
-            />
-          </div>
-          <div className="one mb-4">
             <select
               className="form-select form-control"
-              name="muscleGroup"
-              value={data.muscleGroup}
+              name="day"
+              value={data.day}
               onChange={changeData}
             >
               <option
                 value=""
-                selected={data.muscleGroup === "" ? true : false}
+                selected={data.day === "" ? true : false}
+                disabled
               >
-                Select Muscle Group
+                Select Day
               </option>
-              {muscleGroup.map((one, i) => {
+              {[
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ].map((one, i) => {
+                return (
+                  <option
+                    key={one}
+                    value={one}
+                    selected={data.workout === one ? true : false}
+                    disabled={
+                      entries.length > 0 &&
+                      entries.filter((item, index) => {
+                        return one === item.day;
+                      }).length > 0
+                        ? true
+                        : false
+                    }
+                  >
+                    {one}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="one mb-4">
+            <select
+              className="form-select form-control"
+              name="workout"
+              value={data.workout}
+              onChange={changeData}
+            >
+              <option
+                value=""
+                selected={data.workout === "" ? true : false}
+                disabled
+              >
+                Select Workout
+              </option>
+              {workout.map((one, i) => {
                 return (
                   <option
                     key={one.id}
                     value={one.id}
-                    selected={
-                      data.muscleGroup === one.id.toString() ? true : false
-                    }
+                    selected={data.workout === one ? true : false}
                   >
-                    {one.name}
+                    {one.name}{" "}
+                    {entries.length > 0
+                      ? `(${
+                          entries.filter((item, index) => {
+                            return one.id === item.workout?.id;
+                          }).length
+                        } day)`
+                      : ""}
                   </option>
                 );
               })}
@@ -190,15 +230,15 @@ export default function Exercise() {
       </div>
       <br />
       <div className="view my-3">
-        <h3 className="text-muted">View Exercises</h3>
+        <h3 className="text-muted">View Schedules</h3>
         {entries.length > 0 ? (
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Muscle Group</th>
+                  <th scope="col">Day</th>
+                  <th scope="col">Workout</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -207,8 +247,8 @@ export default function Exercise() {
                   return (
                     <tr>
                       <th scope="row">{i + 1}</th>
-                      <th scope="col">{one.name}</th>
-                      <th scope="col">{one.muscleGroup?.name}</th>
+                      <th scope="col">{one.day}</th>
+                      <th scope="col">{one.workout?.name}</th>
                       <th scope="col">
                         <span
                           role="button"
@@ -228,8 +268,8 @@ export default function Exercise() {
                               id: one.id,
                             });
                             setData({
-                              name: one.name,
-                              muscleGroup: one.muscleGroup?one.muscleGroup.id:"",
+                              day: one.day,
+                              workout: one.workout ? one.workout.id : "",
                               user: "",
                             });
                           }}

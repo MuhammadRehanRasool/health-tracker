@@ -1,6 +1,6 @@
 .__Mixed {
   width: 100%;
-  padding: 0rem 5rem;
+  padding: 0rem 5rem 3rem 5rem;
 }
 .__Mixed .add .form {
   display: flex;
@@ -49,4 +49,7 @@
 
 .__Mixed th{
   text-align: left!important;
+}
+.__Mixed a{
+  text-decoration: none;
 }
