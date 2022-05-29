@@ -27,7 +27,7 @@ export default function Home() {
       </span>
       <div className="mt-5 p-4 d-flex justify-content-center align-items-center">
         <div className="row">
-          <div className="col-6">
+          <div className="col-6 my-3">
             <Card
               link="/muscleGroup"
               title="Muscle Group"
@@ -35,12 +35,20 @@ export default function Home() {
               tagline="Muscle Groups"
             />
           </div>
-          <div className="col-6">
+          <div className="col-6 my-3">
             <Card
               link="/exercise"
               title="Exercise"
               kinds="Add/View/Update"
               tagline="Exercises"
+            />
+          </div>
+          <div className="col-6 my-3">
+            <Card
+              link="/workout"
+              title="Workout"
+              kinds="Add/View/Update"
+              tagline="Workouts"
             />
           </div>
         </div>

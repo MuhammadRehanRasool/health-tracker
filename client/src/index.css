@@ -50,11 +50,17 @@ html {
   align-self: center;
   overflow-wrap: break-word;
 }
-.one input {
+.one input, .one select {
   width: 100%;
   padding: 0.5rem;
   outline: none;
   border: 1px solid grey;
   border-radius: 25px;
   padding: 1rem 2rem;
+  box-shadow: none;
+}
+.one select:focus, .one select:hover{
+  outline: none;
+  box-shadow: none;
+  border: 1px solid grey;
 }

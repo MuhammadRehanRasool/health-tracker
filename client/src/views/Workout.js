@@ -5,16 +5,21 @@ import UserData from "../components/UserData";
 import "./../css/mixed.css";
 import { AiFillDelete, AiTwotoneEdit } from "react-icons/ai";
 
-export default function Exercise() {
+export default function Workout() {
   const { session, setSession } = React.useContext(UserData);
   const __init = {
     name: "",
     user: "",
     muscleGroup: "",
+    exercises: {
+      list: [],
+    },
   };
   const [data, setData] = useState(__init);
   const [entries, setEntries] = useState([]);
   const [muscleGroup, setMuscleGroup] = useState([]);
+  const [exercise, setExercise] = useState([]);
+  const [search, setSearch] = useState("");
   const [isEdit, setIsEdit] = useState({
     status: false,
     id: null,
@@ -35,7 +40,7 @@ export default function Exercise() {
     resetMessage();
     if (data.name !== "") {
       await axiosInstance
-        .post("/exercise", {
+        .post("/workout", {
           ...data,
           user: session.personal.id,
         })
@@ -60,7 +65,7 @@ export default function Exercise() {
 
   const myData = async (e) => {
     await axiosInstance
-      .get(`/exercise/${session.personal.id}`)
+      .get(`/workout/${session.personal.id}`)
       .then((response) => {
         setEntries(response.data);
       })
@@ -127,19 +132,54 @@ export default function Exercise() {
       });
   };
 
+  const fetchExercises = async (e) => {
+    await axiosInstance
+      .get(`/exercise/${session.personal.id}`)
+      .then((response) => {
+        setExercise(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     if (session.personal.id !== "") {
       fetchMuscleGroup();
+      fetchExercises();
       myData();
     }
   }, [session]);
 
+  const addToList = (id) => {
+    setData({
+      ...data,
+      exercises: {
+        list: [...data.exercises.list, id],
+      },
+    });
+  };
+
+  const removeFromList = (id) => {
+    let array = data.exercises.list;
+    let index = array.indexOf(id);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+    setData({
+      ...data,
+      exercises: {
+        list: [...array],
+      },
+    });
+  };
+
   return (
     <div className="__Mixed">
-      <h1>Exercise</h1>
+      <h1>Workout</h1>
       <div className="add my-5">
         <h3 className="text-muted">
-          {isEdit.status ? "Update" : "Add"} Exercise
+          {isEdit.status ? "Update" : "Add"} Workout
         </h3>
         <div className="form">
           <div className="one mb-2">
@@ -151,7 +191,7 @@ export default function Exercise() {
               onChange={changeData}
             />
           </div>
-          <div className="one mb-4">
+          <div className="one mb-2">
             <select
               className="form-select form-control"
               name="muscleGroup"
@@ -177,6 +217,57 @@ export default function Exercise() {
               })}
             </select>
           </div>
+          <div className="custom-exercises-wrapper">
+            <h5 className="text-muted">Select Exercises</h5>
+            <div className="mb-4 custom-exercises">
+              <span className="one col category-custom category-input">
+                <input
+                  placeholder="Search exercises..."
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+              </span>
+              {exercise
+                .filter((one, i) => {
+                  return (
+                    one.name.toLowerCase().includes(search.toLowerCase()) ||
+                    one.muscleGroup?.name
+                      .toLowerCase()
+                      .includes(search.toLowerCase()) ||
+                    data.exercises.list.includes(one.id)
+                  );
+                })
+                .map((one, i) => {
+                  return (
+                    <span
+                      className={`col category-custom ${
+                        data.exercises.list.includes(one.id)
+                          ? "bg-success"
+                          : "bg-secondary"
+                      } text-light`}
+                      onClick={() => {
+                        if (data.exercises.list.includes(one.id)) {
+                          removeFromList(one.id);
+                        } else {
+                          addToList(one.id);
+                        }
+                      }}
+                    >
+                      {one.name}{" "}
+                      {one.muscleGroup ? (
+                        <span className="mx-2 badge bg-light text-dark">
+                          {one.muscleGroup.name}
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  );
+                })}
+            </div>
+          </div>
           <span id="error" style={{ display: "none" }}></span>
           <button
             className="button"
@@ -188,7 +279,7 @@ export default function Exercise() {
       </div>
       <br />
       <div className="view my-3">
-        <h3 className="text-muted">View Exercises</h3>
+        <h3 className="text-muted">View Workouts</h3>
         {entries.length > 0 ? (
           <div className="table-responsive">
             <table className="table">
@@ -197,6 +288,7 @@ export default function Exercise() {
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Muscle Group</th>
+                  <th scope="col">Exercises</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -207,6 +299,17 @@ export default function Exercise() {
                       <th scope="row">{i + 1}</th>
                       <th scope="col">{one.name}</th>
                       <th scope="col">{one.muscleGroup?.name}</th>
+                      <th scope="col d-flex justify-content-center align-items-center">
+                        <span className="text-muted d-flex justify-content-center align-items-center" style={{maxWidth:"200px"}}>
+                          {one.exercises.list
+                            .map((two, j) => {
+                              return exercise.filter((three, k) => {
+                                return three.id === two;
+                              })[0]?.name;
+                            })
+                            .join(", ")}
+                        </span>
+                      </th>
                       <th scope="col">
                         <span
                           role="button"
