@@ -10,6 +10,7 @@ import Workout from "./views/Workout";
 import ViewSchedule from "./views/ViewSchedule";
 import Schedule from "./views/Schedule";
 import StopWatch from "./views/StopWatch";
+import BMI from "./views/BMI";
 // import Layout from "./components/Layout";
 
 function App() {
@@ -72,6 +73,14 @@ function App() {
             element={
               <Layout>
                 <StopWatch />
+              </Layout>
+            }
+          />
+          <Route
+            path="/bmi"
+            element={
+              <Layout>
+                <BMI />
               </Layout>
             }
           />

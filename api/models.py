@@ -46,3 +46,13 @@ class Stopwatch(models.Model):
     seconds = models.IntegerField()
     user = models.ForeignKey(
         CustomUser, related_name="stopwatch_user", on_delete=models.CASCADE)
+
+
+class BMI(models.Model):
+    datetime = models.DateTimeField(auto_now_add=True)
+    height = models.IntegerField()
+    weight = models.IntegerField()
+    bmi = models.CharField(max_length=300, default="")
+    status = models.CharField(max_length=300, default="")
+    user = models.ForeignKey(
+        CustomUser, related_name="bmi_user", on_delete=models.CASCADE)

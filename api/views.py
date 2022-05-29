@@ -243,6 +243,44 @@ def MyStopwatch(request, pk):
             all_data, many=True)
         return JsonResponse(object_serializer.data, safe=False)
 
+
+@api_view(['GET', 'POST'])
+def BMI(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        the_height = float(data["height"])
+        the_weight = float(data["weight"])
+        the_BMI = the_weight/((the_height/100)**2)
+        data["bmi"] = the_BMI
+        if the_BMI <= 18.5:
+            data["status"] = "Underweight"
+        elif the_BMI <= 24.9:
+            data["status"] = "Healthy"
+        elif the_BMI <= 29.9:
+            data["status"] = "Overweight"
+        else:
+            data["status"] = "Obesity"
+        object_serializer = serializers.BMISerializer(data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Something bad happened!'}, status=status.HTTP_200_OK)
+    elif request.method == 'GET':
+        all_data = models.BMI.objects.all().order_by('-id')
+        object_serializer = serializers.BMISerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def MyBMI(request, pk):
+    if request.method == 'GET':
+        # All data of specific user
+        all_data = models.BMI.objects.all().filter(user=pk).order_by('-id')
+        object_serializer = serializers.BMISerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+
 # @api_view(['GET', 'POST', 'DELETE'])
 # def MuscleGroup(request):
     # if request.method == 'GET':
