@@ -10,7 +10,43 @@
   margin: 2rem;
 }
 
+.__Mixed .add .form .one {
+  width: 30%;
+}
 
-.__Mixed .add .form .one{
-    width: 30%;
-  }
+.__Mixed .category-custom {
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  white-space: nowrap;
+  border-radius: 30px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.__Mixed .category-input input{
+  padding: 0.5rem 1rem !important;
+  width: fit-content!important;
+}
+
+.__Mixed .custom-exercises-wrapper {
+  width: 80%;
+  margin-top: 2rem;
+}
+
+.__Mixed .custom-exercises {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.__Mixed th{
+  text-align: left!important;
+}

@@ -42,8 +42,20 @@ class ExerciseSerializer(serializers.ModelSerializer):
         model = models.Exercise
         fields = ('id', 'name', 'muscleGroup', 'user')
 
+class ViewExerciseSerializer(serializers.ModelSerializer):
+    muscleGroup = MuscleGroupSerializer()
+    class Meta:
+        model = models.Exercise
+        fields = ('id', 'name', 'muscleGroup', 'user')
+
 
 class WorkoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Workout
+        fields = ('id', 'name', 'exercises', 'muscleGroup', 'user')
+
+class ViewWorkoutSerializer(serializers.ModelSerializer):
+    muscleGroup = MuscleGroupSerializer()
     class Meta:
         model = models.Workout
         fields = ('id', 'name', 'exercises', 'muscleGroup', 'user')

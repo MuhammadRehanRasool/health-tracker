@@ -6,6 +6,7 @@ import Home from "./views/Home";
 import Layout from "./components/Layout";
 import Exercise from "./views/Exercise";
 import MuscleGroup from "./views/MuscleGroup";
+import Workout from "./views/Workout";
 // import Layout from "./components/Layout";
 
 function App() {
@@ -36,6 +37,14 @@ function App() {
             element={
               <Layout>
                 <Exercise />
+              </Layout>
+            }
+          />
+          <Route
+            path="/workout"
+            element={
+              <Layout>
+                <Workout />
               </Layout>
             }
           />

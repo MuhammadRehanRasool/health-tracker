@@ -95,6 +95,87 @@ def MyMuscleGroup(request, pk):
         return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
 
 
+@api_view(['GET', 'POST', 'DELETE'])
+def Exercise(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        object_serializer = serializers.ExerciseSerializer(data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Exercise with the same name already exists!'}, status=status.HTTP_200_OK)
+    elif request.method == 'GET':
+        all_data = models.Exercise.objects.all().order_by('-id')
+        object_serializer = serializers.ViewExerciseSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def MyExercise(request, pk):
+    if request.method == 'GET':
+        # All data of specific user
+        all_data = models.Exercise.objects.all().filter(user=pk).order_by('-id')
+        object_serializer = serializers.ViewExerciseSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+    elif request.method == 'PUT':
+        # Modifying specific entry
+        entry = models.Exercise.objects.get(pk=pk)
+        data = JSONParser().parse(request)
+        object_serializer = serializers.ExerciseSerializer(
+            entry, data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        entry = models.Exercise.objects.get(pk=pk)
+        entry.delete()
+        return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def Workout(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        object_serializer = serializers.WorkoutSerializer(data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Workout with the same name already exists!'}, status=status.HTTP_200_OK)
+    elif request.method == 'GET':
+        all_data = models.Workout.objects.all().order_by('-id')
+        object_serializer = serializers.ViewWorkoutSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def MyWorkout(request, pk):
+    if request.method == 'GET':
+        # All data of specific user
+        all_data = models.Workout.objects.all().filter(user=pk).order_by('-id')
+        object_serializer = serializers.ViewWorkoutSerializer(
+            all_data, many=True)
+        return JsonResponse(object_serializer.data, safe=False)
+    elif request.method == 'PUT':
+        # Modifying specific entry
+        entry = models.Workout.objects.get(pk=pk)
+        data = JSONParser().parse(request)
+        object_serializer = serializers.WorkoutSerializer(
+            entry, data=data)
+        if object_serializer.is_valid():
+            object_serializer.save()
+            return JsonResponse(object_serializer.data)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        entry = models.Workout.objects.get(pk=pk)
+        entry.delete()
+        return JsonResponse({'message': 'Deleted!'}, status=status.HTTP_200_OK)
+
+
 # @api_view(['GET', 'POST', 'DELETE'])
 # def MuscleGroup(request):
     # if request.method == 'GET':
