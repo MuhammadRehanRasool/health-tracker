@@ -80,9 +80,9 @@ export default function Workout() {
       '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
     e.preventDefault();
     resetMessage();
-    if (data.name !== "") {
+    if (data.name !== "" && data.exercises.list.length > 0) {
       await axiosInstance
-        .put(`/exercise/${isEdit.id ? isEdit.id : ""}`, {
+        .put(`/workout/${isEdit.id ? isEdit.id : ""}`, {
           ...data,
           user: session.personal.id,
         })
@@ -103,7 +103,10 @@ export default function Workout() {
         id: null,
       });
     } else {
-      setMessage("Please fill all inputs!", "danger");
+      setMessage(
+        "Please fill all inputs and make sure to select atleast one exercise!",
+        "danger"
+      );
     }
     e.target.style.pointerEvents = "unset";
     e.target.innerHTML = "Add";
@@ -111,7 +114,7 @@ export default function Workout() {
 
   const deleteData = async (id) => {
     await axiosInstance
-      .delete(`/exercise/${id}`)
+      .delete(`/workout/${id}`)
       .then((response) => {
         setMessage(`Deleted!`, "success");
         myData();
@@ -220,52 +223,58 @@ export default function Workout() {
           <div className="custom-exercises-wrapper">
             <h5 className="text-muted">Select Exercises</h5>
             <div className="mb-4 custom-exercises">
-              <span className="one col category-custom category-input">
-                <input
-                  placeholder="Search exercises..."
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
-              </span>
-              {exercise
-                .filter((one, i) => {
-                  return (
-                    one.name.toLowerCase().includes(search.toLowerCase()) ||
-                    one.muscleGroup?.name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    data.exercises.list.includes(one.id)
-                  );
-                })
-                .map((one, i) => {
-                  return (
-                    <span
-                      className={`col category-custom ${
-                        data.exercises.list.includes(one.id)
-                          ? "bg-success"
-                          : "bg-secondary"
-                      } text-light`}
-                      onClick={() => {
-                        if (data.exercises.list.includes(one.id)) {
-                          removeFromList(one.id);
-                        } else {
-                          addToList(one.id);
-                        }
+              {exercise.length > 0 ? (
+                <>
+                  <span className="one col category-custom category-input">
+                    <input
+                      placeholder="Search exercises..."
+                      value={search}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
                       }}
-                    >
-                      {one.name}{" "}
-                      {one.muscleGroup ? (
-                        <span className="mx-2 badge bg-light text-dark">
-                          {one.muscleGroup.name}
+                    />
+                  </span>
+                  {exercise
+                    .filter((one, i) => {
+                      return (
+                        one.name.toLowerCase().includes(search.toLowerCase()) ||
+                        one.muscleGroup?.name
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        data.exercises.list.includes(one.id)
+                      );
+                    })
+                    .map((one, i) => {
+                      return (
+                        <span
+                          className={`col category-custom ${
+                            data.exercises.list.includes(one.id)
+                              ? "bg-success"
+                              : "bg-secondary"
+                          } text-light`}
+                          onClick={() => {
+                            if (data.exercises.list.includes(one.id)) {
+                              removeFromList(one.id);
+                            } else {
+                              addToList(one.id);
+                            }
+                          }}
+                        >
+                          {one.name}{" "}
+                          {one.muscleGroup ? (
+                            <span className="mx-2 badge bg-light text-dark">
+                              {one.muscleGroup.name}
+                            </span>
+                          ) : (
+                            ""
+                          )}
                         </span>
-                      ) : (
-                        ""
-                      )}
-                    </span>
-                  );
-                })}
+                      );
+                    })}
+                </>
+              ) : (
+                "No Exercises"
+              )}
             </div>
           </div>
           <span id="error" style={{ display: "none" }}></span>
@@ -300,7 +309,10 @@ export default function Workout() {
                       <th scope="col">{one.name}</th>
                       <th scope="col">{one.muscleGroup?.name}</th>
                       <th scope="col d-flex justify-content-center align-items-center">
-                        <span className="text-muted d-flex justify-content-center align-items-center" style={{maxWidth:"200px"}}>
+                        <span
+                          className="text-muted d-flex justify-content-center align-items-center"
+                          style={{ maxWidth: "200px" }}
+                        >
                           {one.exercises.list
                             .map((two, j) => {
                               return exercise.filter((three, k) => {
@@ -330,8 +342,11 @@ export default function Workout() {
                             });
                             setData({
                               name: one.name,
-                              muscleGroup: one.muscleGroup.id,
+                              muscleGroup: one.muscleGroup
+                                ? one.muscleGroup.id
+                                : "",
                               user: "",
+                              exercises: one.exercises,
                             });
                           }}
                         >
