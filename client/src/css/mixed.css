@@ -28,9 +28,9 @@
   cursor: pointer;
 }
 
-.__Mixed .category-input input{
+.__Mixed .category-input input {
   padding: 0.5rem 1rem !important;
-  width: fit-content!important;
+  width: fit-content !important;
 }
 
 .__Mixed .custom-exercises-wrapper {
@@ -47,9 +47,40 @@
   flex-wrap: wrap;
 }
 
-.__Mixed th{
-  text-align: left!important;
+.__Mixed th {
+  text-align: left !important;
 }
-.__Mixed a{
+.__Mixed a {
   text-decoration: none;
+}
+
+/* Timer */
+.__Timer p {
+  font-size: 28px;
+}
+
+.__Timer .row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.__Timer .stopwatch-card {
+  text-align: center;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: fit-content;
+  padding: 3rem;
+  transition: 500ms;
+}
+
+.__Timer button {
+  margin: 0.5rem 1rem;
+}
+
+.__Timer .buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  margin-top: 5px;
 }

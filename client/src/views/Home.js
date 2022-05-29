@@ -67,6 +67,14 @@ export default function Home() {
               tagline="Calendar"
             />
           </div>
+          <div className="col-lg-4 col-md-6 col-sm-12 my-3 d-flex justify-content-center align-items-center">
+            <Card
+              link="/stopWatch"
+              title="Stop Watch"
+              kinds="Track"
+              tagline="Sessions"
+            />
+          </div>
         </div>
       </div>
     </div>

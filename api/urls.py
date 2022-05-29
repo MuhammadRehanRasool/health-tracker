@@ -12,6 +12,8 @@ urlpatterns = [
     re_path(r'^workout/(?P<pk>[0-9]+)$', views.MyWorkout),
     re_path(r'^schedule$', views.Schedule),
     re_path(r'^schedule/(?P<pk>[0-9]+)$', views.MySchedule),
+    re_path(r'^stopwatch$', views.Stopwatch),
+    re_path(r'^stopwatch/(?P<pk>[0-9]+)$', views.MyStopwatch),
     path('token/obtain', views.MyTokenObtainPairView.as_view(), name='token_create'),
     path('token/refresh', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]

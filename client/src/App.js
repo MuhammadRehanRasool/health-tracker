@@ -9,6 +9,7 @@ import MuscleGroup from "./views/MuscleGroup";
 import Workout from "./views/Workout";
 import ViewSchedule from "./views/ViewSchedule";
 import Schedule from "./views/Schedule";
+import StopWatch from "./views/StopWatch";
 // import Layout from "./components/Layout";
 
 function App() {
@@ -63,6 +64,14 @@ function App() {
             element={
               <Layout>
                 <ViewSchedule />
+              </Layout>
+            }
+          />
+          <Route
+            path="/stopWatch"
+            element={
+              <Layout>
+                <StopWatch />
               </Layout>
             }
           />
