@@ -38,7 +38,7 @@ export default function Workout() {
       '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
     e.preventDefault();
     resetMessage();
-    if (data.name !== "") {
+    if (data.name !== "" && data.exercises.list.length > 0) {
       await axiosInstance
         .post("/workout", {
           ...data,

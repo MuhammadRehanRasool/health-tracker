@@ -58,11 +58,15 @@ class CustomUserCreate(APIView):
 def MuscleGroup(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        count = models.MuscleGroup.objects.all().filter(
+            user=data["user"], name=data["name"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Muscle group with the same name already exists!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.MuscleGroupSerializer(data=data)
         if object_serializer.is_valid():
             object_serializer.save()
             return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Muscle group with the same name already exists!'}, status=status.HTTP_200_OK)
+        return JsonResponse({'message': object_serializer.errors}, status=status.HTTP_200_OK)
     elif request.method == 'GET':
         all_data = models.MuscleGroup.objects.all().order_by('-id')
         object_serializer = serializers.MuscleGroupSerializer(
@@ -82,6 +86,10 @@ def MyMuscleGroup(request, pk):
         # Modifying specific entry
         entry = models.MuscleGroup.objects.get(pk=pk)
         data = JSONParser().parse(request)
+        count = models.MuscleGroup.objects.all().filter(
+            user=data["user"], name=data["name"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Muscle group with the same name already exists!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.MuscleGroupSerializer(
             entry, data=data)
         if object_serializer.is_valid():
@@ -99,11 +107,15 @@ def MyMuscleGroup(request, pk):
 def Exercise(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        count = models.Exercise.objects.all().filter(
+            user=data["user"], name=data["name"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Exercise with the same name already exists!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.ExerciseSerializer(data=data)
         if object_serializer.is_valid():
             object_serializer.save()
             return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Exercise with the same name already exists!'}, status=status.HTTP_200_OK)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
     elif request.method == 'GET':
         all_data = models.Exercise.objects.all().order_by('-id')
         object_serializer = serializers.ViewExerciseSerializer(
@@ -123,6 +135,10 @@ def MyExercise(request, pk):
         # Modifying specific entry
         entry = models.Exercise.objects.get(pk=pk)
         data = JSONParser().parse(request)
+        count = models.Exercise.objects.all().filter(
+            user=data["user"], name=data["name"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Exercise with the same name already exists!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.ExerciseSerializer(
             entry, data=data)
         if object_serializer.is_valid():
@@ -140,11 +156,15 @@ def MyExercise(request, pk):
 def Workout(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        count = models.Workout.objects.all().filter(
+            user=data["user"], name=data["name"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Workout with the same name already exists!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.WorkoutSerializer(data=data)
         if object_serializer.is_valid():
             object_serializer.save()
             return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Workout with the same name already exists!'}, status=status.HTTP_200_OK)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
     elif request.method == 'GET':
         all_data = models.Workout.objects.all().order_by('-id')
         object_serializer = serializers.ViewWorkoutSerializer(
@@ -164,6 +184,10 @@ def MyWorkout(request, pk):
         # Modifying specific entry
         entry = models.Workout.objects.get(pk=pk)
         data = JSONParser().parse(request)
+        count = models.Workout.objects.all().filter(
+            user=data["user"], name=data["name"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Workout with the same name already exists!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.WorkoutSerializer(
             entry, data=data)
         if object_serializer.is_valid():
@@ -181,11 +205,15 @@ def MyWorkout(request, pk):
 def Schedule(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
+        count = models.Schedule.objects.all().filter(
+            user=data["user"], day=data["day"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Day is already reserved!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.ScheduleSerializer(data=data)
         if object_serializer.is_valid():
             object_serializer.save()
             return JsonResponse(object_serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Day is already reserved!'}, status=status.HTTP_200_OK)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
     elif request.method == 'GET':
         all_data = models.Schedule.objects.all().order_by('-id')
         object_serializer = serializers.ViewScheduleSerializer(
@@ -205,12 +233,16 @@ def MySchedule(request, pk):
         # Modifying specific entry
         entry = models.Schedule.objects.get(pk=pk)
         data = JSONParser().parse(request)
+        count = models.Schedule.objects.all().filter(
+            user=data["user"], day=data["day"]).count()
+        if count > 0:
+            return JsonResponse({'message': 'Day is already reserved!'}, status=status.HTTP_200_OK)
         object_serializer = serializers.ScheduleSerializer(
             entry, data=data)
         if object_serializer.is_valid():
             object_serializer.save()
             return JsonResponse(object_serializer.data)
-        return JsonResponse({'message': 'Day is already reserved!'}, status=status.HTTP_200_OK)
+        return JsonResponse(object_serializer.errors, status=status.HTTP_200_OK)
 
     elif request.method == 'DELETE':
         entry = models.Schedule.objects.get(pk=pk)
@@ -280,60 +312,3 @@ def MyBMI(request, pk):
         object_serializer = serializers.BMISerializer(
             all_data, many=True)
         return JsonResponse(object_serializer.data, safe=False)
-
-# @api_view(['GET', 'POST', 'DELETE'])
-# def MuscleGroup(request):
-    # if request.method == 'GET':
-    #     Signup = models.Signup.objects.all()
-
-    #     plan = request.query_params.get('plan', None)
-    #     if plan is not None:
-    #         Signup = Signup.filter(plan=plan)
-
-    #     signup_serializer = serializers.SignupSerializer(Signup, many=True)
-    #     return JsonResponse(signup_serializer.data, safe=False)
-    #     # 'safe=False' for objects serialization
-
-    # elif request.method == 'POST':
-    #     user_data = JSONParser().parse(request)
-    #     user_data["password"] = make_password(user_data["password"])
-    #     if user_data["plan"] == "basic":
-    #         user_data["credits"] = 50
-    #     elif user_data["plan"] == "advanced":
-    #         user_data["credits"] = 75
-    #     elif user_data["plan"] == "professional":
-    #         user_data["credits"] = 100
-    #     signup_serializer = serializers.SignupSerializer(data=user_data)
-    #     if signup_serializer.is_valid():
-    #         signup_serializer.save()
-    #         return JsonResponse(signup_serializer.data, status=status.HTTP_200_OK)
-    #     return JsonResponse({'message': 'exists'}, status=status.HTTP_200_OK)
-
-    # elif request.method == 'DELETE':
-    #     count = models.Signup.objects.all().delete()
-    #     return JsonResponse({'message': 'alldeleted'}, status=status.HTTP_200_OK)
-    # pass
-
-# @api_view(['GET', 'PUT', 'DELETE'])
-# def user_detail(request, pk):
-#     try:
-#         user = models.Signup.objects.get(pk=pk)
-#     except models.Signup.DoesNotExist:
-#         return JsonResponse({'message': 'notexist'}, status=status.HTTP_200_OK)
-
-#     if request.method == 'GET':
-#         signup_serializer = serializers.SignupSerializer(user)
-#         return JsonResponse(signup_serializer.data)
-
-#     elif request.method == 'PUT':
-#         user_data = JSONParser().parse(request)
-#         signup_serializer = serializers.SignupSerializer(
-#             user, data=user_data)
-#         if signup_serializer.is_valid():
-#             signup_serializer.save()
-#             return JsonResponse(signup_serializer.data)
-#         return JsonResponse(signup_serializer.errors, status=status.HTTP_200_OK)
-
-#     elif request.method == 'DELETE':
-#         user.delete()
-#         return JsonResponse({'message': 'deleted'}, status=status.HTTP_200_OK)

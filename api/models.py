@@ -11,13 +11,13 @@ class CustomUser(AbstractUser):
 
 
 class MuscleGroup(models.Model):
-    name = models.CharField(max_length=300, unique=True)
+    name = models.CharField(max_length=300)
     user = models.ForeignKey(
         CustomUser, related_name="muscle_group_user", on_delete=models.CASCADE)
 
 
 class Exercise(models.Model):
-    name = models.CharField(max_length=300, unique=True)
+    name = models.CharField(max_length=300)
     muscleGroup = models.ForeignKey(
         MuscleGroup, related_name="exercise_group", on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(
@@ -25,7 +25,7 @@ class Exercise(models.Model):
 
 
 class Workout(models.Model):
-    name = models.CharField(max_length=300, unique=True)
+    name = models.CharField(max_length=300)
     exercises = models.JSONField()
     muscleGroup = models.ForeignKey(
         MuscleGroup, related_name="workout_group", on_delete=models.CASCADE, blank=True, null=True)
@@ -34,7 +34,7 @@ class Workout(models.Model):
 
 
 class Schedule(models.Model):
-    day = models.CharField(max_length=300, unique=True)
+    day = models.CharField(max_length=300)
     workout = models.ForeignKey(
         Workout, related_name="schedule_workout", on_delete=models.CASCADE)
     user = models.ForeignKey(
