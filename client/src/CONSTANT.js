@@ -1,6 +1,6 @@
 export const CONSTANT = {
-  client: "http://localhost:3000/",
-  server: "http://127.0.0.1:8000/api/",
+  client: process.env.REACT_APP_CLIENT_URL || "http://localhost:3000/",
+  server: process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api/",
 };
 
 
